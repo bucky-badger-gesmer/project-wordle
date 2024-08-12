@@ -1,0 +1,15 @@
+import React from 'react';
+import '../../styles.css';
+
+const WinBanner = ({ numGuesses }) => {
+  return (
+    <div className="happy banner">
+      <p>
+      <strong>Congratulations!</strong> Got it in{' '}
+      <strong>{numGuesses} guesses</strong>.
+      </p>
+    </div>
+  );
+};
+
+export default WinBanner;
