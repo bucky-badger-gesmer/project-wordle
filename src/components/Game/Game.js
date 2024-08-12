@@ -14,29 +14,38 @@ const answer = sample(WORDS);
 console.info({ answer });
 
 function Game() {
+  const [currentAnswer, setCurrentAnswer] = React.useState(answer);
   const [guess, setGuess] = React.useState('');
   const [guesses, setGuesses] = React.useState([]);
   const [gameOver, setGameOver] = React.useState(false);
 
+  const resetGame = () => {
+    const nextCurrentAnswer = sample(WORDS);
+    setCurrentAnswer(nextCurrentAnswer);
+
+    setGuesses([]);
+    setGameOver(false);
+  };
+
   const renderWin = () => {
-    if (guesses[guesses.length - 1] === answer) {
+    if (guesses[guesses.length - 1] === currentAnswer) {
       return (
-        <WinBanner numGuesses={guesses.length} />
+        <WinBanner numGuesses={guesses.length} resetGame={resetGame} />
       );
     };
   };
 
   const renderLose = () => {
-    if (guesses.length === NUM_OF_GUESSES_ALLOWED && guesses[guesses.length - 1] !== answer) {
+    if (guesses.length === NUM_OF_GUESSES_ALLOWED && guesses[guesses.length - 1] !== currentAnswer) {
       return (
-        <LoseBanner correctAnswer={answer} />
+        <LoseBanner correctAnswer={currentAnswer} resetGame={resetGame} />
       );
     }
   };
 
   return (
     <>
-      <GuessResults guesses={guesses} answer={answer} />
+      <GuessResults guesses={guesses} answer={currentAnswer} />
       <form className="guess-input-wrapper" onSubmit={(e) => {
         e.preventDefault();
         console.info({ guess });
@@ -44,7 +53,7 @@ function Game() {
         setGuesses(nextGuesses);
         setGuess('');
 
-        if ((guess === answer) || (nextGuesses.length === NUM_OF_GUESSES_ALLOWED && nextGuesses[nextGuesses.length - 1] !== answer)) {
+        if ((guess === currentAnswer) || (nextGuesses.length === NUM_OF_GUESSES_ALLOWED && nextGuesses[nextGuesses.length - 1] !== currentAnswer)) {
           setGameOver(true);
         }
       }}>
