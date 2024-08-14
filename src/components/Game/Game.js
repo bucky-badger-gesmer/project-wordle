@@ -64,8 +64,10 @@ function Game() {
           id="guess-input"
           disabled={gameOver}
           type="text"
-          minLength="5"
-          maxLength="5"
+          minLength={5}
+          maxLength={5}
+          pattern="[a-zA-Z]{5}"
+          title="5 letter word"
           value={guess}
           onChange={(e) => {
             setGuess(String(e.target.value).toUpperCase());
